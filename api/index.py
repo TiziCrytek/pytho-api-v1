@@ -4,7 +4,7 @@ from tradingview_ta import TA_Handler, Interval
 
 app = Flask(__name__)
 CORS(app)
-cors = CORS(app, resources = {r"/*": {"origins": "*"}})
+cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
