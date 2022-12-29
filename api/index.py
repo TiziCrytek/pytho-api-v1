@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import cross_origin
 from tradingview_ta import TA_Handler, Interval
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ def home():
     return 'Hello, World!'
 
 @app.route('/get')
+@cross_origin(origins = ['https://api-v1.vercel.app/get'])
 def get():
     bank = TA_Handler(
         symbol = 'EURUSD',
