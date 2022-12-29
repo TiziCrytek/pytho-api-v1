@@ -3,7 +3,7 @@ from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 
 app = Flask(__name__)
-CORS(app, origins = ['https://api-v1.vercel.app/get'])
+cors = CORS(resources = {r"/*": {"origins": ['https://api-v1.vercel.app/get']}})
 
 @app.route('/')
 def home():
