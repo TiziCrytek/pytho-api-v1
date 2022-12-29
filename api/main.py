@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.get('/users')
+@app.route('/users')
 def root():
     return 'Hello'
 
