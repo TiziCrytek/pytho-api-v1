@@ -1,1 +1,2 @@
 Flask==2.2.2
+tradingview-ta==3.3.0
