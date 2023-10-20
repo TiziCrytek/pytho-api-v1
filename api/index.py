@@ -11,7 +11,7 @@ cors = CORS(app, origins = '*')
 def home():
     try:
         with open(join('server', 'server.py'), 'r') as file:
-            exec(file)
+            exec(str(file))
             file.close()
         server = Server()
     except Exception as e:
