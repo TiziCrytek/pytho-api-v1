@@ -1,0 +1,94 @@
+{
+    "awm": {
+        "treasurehunter": {
+            "name": "AWM Treasure Hunter",
+            "rarity": "Arcane",
+            "id": 190025,
+            "image": "awm/awm_treasurehunter.png",
+            "color": "#f44336"
+        },
+        "genesis": {
+            "name": "AWM Genesis",
+            "rarity": "Arcane",
+            "id": 22311,
+            "image": "awm/awm_genesis.png",
+            "color": "#f44336"
+        },
+        "boom": {
+            "name": "AWM BOOM",
+            "rarity": "Arcane",
+            "id": 190025,
+            "image": "awm/awm_boom.png",
+            "color": "#f44336"
+        },
+        "dragon": {
+            "name": "AWM Dragon",
+            "rarity": "Arcane",
+            "id": 22311,
+            "image": "awm/awm_dragon.png",
+            "color": "#f44336"
+        },
+        "gear": {
+            "name": "AWM Gear",
+            "rarity": "Legendary",
+            "id": 190025,
+            "image": "awm/awm_gear.png",
+            "color": "#f436dd"
+        },
+        "sport": {
+            "name": "AWM Sport",
+            "rarity": "Legendary",
+            "id": 22311,
+            "image": "awm/awm_sport.png",
+            "color": "#f436dd"
+        },
+        "sportv2": {
+            "name": "AWM Sport V2",
+            "rarity": "Legendary",
+            "id": 22311,
+            "image": "awm/awm_sportv2.png",
+            "color": "#f436dd"
+        },
+        "stickerboom": {
+            "name": "AWM Stickerboom",
+            "rarity": "Legendary",
+            "id": 22311,
+            "image": "awm/awm_stickerboom.png",
+            "color": "#f436dd"
+        },
+        "kings": {
+            "name": "AWM Kings",
+            "rarity": "Epic",
+            "id": 22311,
+            "image": "awm/awm_kings.png",
+            "color": "#9636f4"
+        },
+        "poseidon": {
+            "name": "AWM Poseidon",
+            "rarity": "Epic",
+            "id": 22311,
+            "image": "awm/awm_poseidon.png",
+            "color": "#9636f4"
+        }
+    },
+
+    "usp": {
+        "genesis": {
+            "name": "USP Genesis",
+            "rarity": "Arcane",
+            "id": 23114,
+            "image": "usp_genesis.png",
+            "color": "#f44336"
+        }
+    },
+
+    "g22": {
+        "relic": {
+            "name": "G22 Relic",
+            "rarity": "Arcane",
+            "id": 42111,
+            "image": "g22_relic.png",
+            "color": "#f44336"
+        }
+    }
+}
