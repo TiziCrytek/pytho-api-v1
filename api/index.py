@@ -178,11 +178,12 @@ cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
+    s = 'OK'
     try:
         Server().start_server()
-    except:
-        pass
-    return 'OK'
+    except Exception as e:
+        s = e
+    return s
 
 @app.route('/get')
 def get():
