@@ -13,7 +13,6 @@ def home():
         with open(join('server', 'server.py'), 'r') as file:
             exec(str(file))
             file.close()
-        server = Server()
     except Exception as e:
         server = e
     return str(server)
