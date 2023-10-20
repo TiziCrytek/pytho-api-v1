@@ -9,6 +9,10 @@ app = Flask(__name__)
 CORS(app)
 cors = CORS(app, origins = '*')
 
+@app.route('/', methods=['POST'])
+def test():
+    return ok, 500
+
 @app.route('/test', methods=['POST'])
 def handle_post_request():
     if request.method == 'POST':
