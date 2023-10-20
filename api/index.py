@@ -12,7 +12,10 @@ def home():
     with open(join('server', 'server.py'), 'r') as file:
         exec(file)
         file.close()
-    server = Server()
+    try:
+        server = Server()
+    except Exception as e:
+        server = e
     return str(server)
 
 @app.route('/get')
