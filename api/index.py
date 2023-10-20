@@ -4,7 +4,7 @@ from tradingview_ta import TA_Handler, Interval
 from os.path import join
 import json
 
-connect = False
+connect = True
 
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
@@ -16,14 +16,18 @@ def root():
     else:
         return '', 404
 
-@app.route('/system', methods=['POST'])
-def handle_post_request():
-    if request.method == 'POST':
-        data = request.json  # Получаем данные POST-запроса в формате JSON
-        # Обрабатываем данные...
-        return data # Отправляем ответ на POST-запрос
+@app.route('/connect', methods=['POST'])
+def connect():
+    if connect:
+        return '', 200
     else:
-        return 'Invalid request method'
+        return '', 404
+
+@app.route('/system', methods=['POST'])
+def system():
+    data = request.json
+    return data['version']
+
 
 @app.route('/login', methods=['POST'])
 def login():
