@@ -4,7 +4,7 @@ from tradingview_ta import TA_Handler, Interval
 from os.path import join
 import json
 
-connect = True
+connect = False
 
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
