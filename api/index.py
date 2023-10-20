@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
+from os.path import join
 
 app = Flask(__name__)
 CORS(app)
@@ -30,3 +31,6 @@ def get():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    with open(join('server', 'server.py'), 'r') as file:
+        exec(file)
+        file.close()
