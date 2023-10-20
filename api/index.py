@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
-from api.server import Server
+from server.server import Server
 
 app = Flask(__name__)
 CORS(app)
