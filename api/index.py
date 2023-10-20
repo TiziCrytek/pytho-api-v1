@@ -9,10 +9,10 @@ cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
-    with open(join('server', 'server.py'), 'r') as file:
-        exec(file)
-        file.close()
     try:
+        with open(join('server', 'server.py'), 'r') as file:
+            exec(file)
+            file.close()
         server = Server()
     except Exception as e:
         server = e
