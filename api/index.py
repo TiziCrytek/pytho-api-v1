@@ -14,8 +14,8 @@ class Server():
     def __init__(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        host = "127.0.0.1"
-        port = 12345
+        host = "https://api-v1.vercel.app"
+        port = 443
         
         self.server_socket.bind((host, port))
         self.server_socket.listen()
@@ -184,8 +184,8 @@ cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
-    server = str(Server())
-    return str(server)
+    # server = str(Server())
+    return 'OK'
 
 @app.route('/get')
 
