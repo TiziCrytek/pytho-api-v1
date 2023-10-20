@@ -12,7 +12,7 @@ def handle_post_request():
     if request.method == 'POST':
         data = request.json  # Получаем данные POST-запроса в формате JSON
         # Обрабатываем данные...
-        return 'POST request received successfully'  # Отправляем ответ на POST-запрос
+        return data # Отправляем ответ на POST-запрос
     else:
         return 'Invalid request method'
 
