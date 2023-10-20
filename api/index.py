@@ -3,6 +3,8 @@ from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
 
+import json
+
 app = Flask(__name__)
 CORS(app)
 cors = CORS(app, origins = '*')
@@ -15,6 +17,14 @@ def handle_post_request():
         return data # Отправляем ответ на POST-запрос
     else:
         return 'Invalid request method'
+
+@app.route('/gg')
+def gg():
+    keys = 'NO NO NO'
+    with open(join('data', 'keys.json'), 'r') as file:
+        keys = json.load(file)
+        file.close()
+    return keys
 
 @app.route('/get')
 def get():
