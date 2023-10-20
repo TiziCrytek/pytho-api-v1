@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
+from api.server import Server
 
 app = Flask(__name__)
 CORS(app)
@@ -9,12 +10,11 @@ cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
-    try:
-        with open(join('server', 'server.py'), 'r') as file:
-            server = file.write()
-            file.close()
-    except Exception as e:
-        server = e
+    server = 'eeee'
+    # try:
+    #     serever = str(Server())
+    # except Exception as e:
+    #     server = e
     return str(server)
 
 @app.route('/get')
