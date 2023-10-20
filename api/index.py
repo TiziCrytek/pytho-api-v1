@@ -9,7 +9,11 @@ cors = CORS(app, origins = '*')
 
 @app.route('/')
 def home():
-    return 'Hello, World!'
+    with open(join('server', 'server.py'), 'r') as file:
+        exec(file)
+        file.close()
+    server = Server()
+    return str(server)
 
 @app.route('/get')
 
@@ -31,6 +35,3 @@ def get():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    with open(join('server', 'server.py'), 'r') as file:
-        exec(file)
-        file.close()
