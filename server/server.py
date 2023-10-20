@@ -172,5 +172,3 @@ class Server():
                     print('set_version')
                 else:
                     print('NO COMMAND')
-
-Server().start_server()
