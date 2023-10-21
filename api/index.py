@@ -45,13 +45,14 @@ def connect():
 
 @app.route('/save', methods=['POST'])
 def save():
-    with open(join('data', 'keys.json'), 'r') as file:
-        keys = json.load(file)
-        file.close()
+    try:
+        with open(join('data', 'keys.json'), 'r') as file:
+            keys = json.load(file)
+            file.close()
 
-    data = request.json
-    if data['code'] == 15142:
-        try:
+        data = request.json
+        if data['code'] == 15142:
+            
             key = data['key']
             if key in keys:
                 if keys[key]['device'] == '':
@@ -60,8 +61,8 @@ def save():
                         json.dump(keys, file)
                         file.close()
                 return key, 200
-        except Exception as e:
-            return e
+    except Exception as e:
+        return e
 
 @app.route('/login', methods=['POST'])
 def login():
