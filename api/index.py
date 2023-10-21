@@ -6,8 +6,6 @@ import json
 
 server_access = True
 
-
-
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
 
@@ -66,6 +64,9 @@ def login():
         key = data['key']
         if key in keys:
             if keys[key]['device'] == data['mac']:
+                with open(join('data', 'app.py'), 'r') as file:
+                    app = json.load(file)
+                    file.close()
                 res = {
                     "key": {
                         "status": "ok",
