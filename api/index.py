@@ -67,7 +67,7 @@ def login():
         if key in keys:
             if keys[key]['device'] == data['mac']:
                 with open(join('data', 'app.py'), 'r') as file:
-                    app = json.load(file)
+                    app = file.read()
                     file.close()
                 res = {
                     "key": {
