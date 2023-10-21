@@ -8,6 +8,102 @@ server_access = True
 
 
 
+app = Flask(__name__)
+cors = CORS(app, origins = '*')
+
+@app.route('/get-skins', methods=['POST'])
+def get_skins():
+    with open(join('data', 'skins.json'), 'r') as file:
+        skins = json.load(file)
+        file.close()
+        
+    data = request.json
+    if data['code'] == 15142:
+        return skins
+
+@app.route('/version', methods=['POST'])
+def version():
+    data = request.json
+    if data['code'] == 15142:
+        if data['version'] == 'v0.1':
+            return '', 200
+        else:
+            return '', 400
+
+@app.route('/connect', methods=['POST'])
+def connect():
+    data = request.json
+    if data['code'] == 15142:
+        if server_access:
+            return '', 200
+        else:
+            return '', 400
+
+@app.route('/save', methods=['POST'])
+def save():
+    with open(join('data', 'keys.json'), 'r') as file:
+        keys = json.load(file)
+        file.close()
+
+    data = request.json
+    if data['code'] == 15142:
+        key = data['key']
+        if key in keys:
+            if keys[key]['device'] == '':
+                keys[key]['device'] = data['mac']
+                with open(join('data', 'keys.json'), 'w') as file:
+                    json.dump(keys, file)
+                    file.close()
+            return '', 200
+
+@app.route('/login', methods=['POST'])
+def login():
+    with open(join('data', 'keys.json'), 'r') as file:
+        keys = json.load(file)
+        file.close()
+    data = request.json
+    if data['code'] == 15142:
+        key = data['key']
+        if key in keys:
+            if keys[key]['device'] == data['mac']:
+                res = {
+                    "key": {
+                        "status": "ok",
+                        "device": keys[key]['device']
+                    },
+                    
+                    "app": app
+                }
+            elif keys[key]['device'] != data['mac']:
+                res = {
+                    "key": {
+                        "status": "ok",
+                        "device": "error"
+                    },
+                    
+                    "app": ""
+                }
+            elif keys[key]['device'] == '':
+                res = {
+                    "key": {
+                        "status": "ok",
+                        "device": ""
+                    },
+                    
+                    "app": ""
+                }
+        else:
+            res = {
+                    "key": {
+                        "status": "",
+                        "device": ""
+                    },
+                    
+                    "app": ""
+                } 
+
+        return res
+
 @app.route('/get')
 def get():
     bank = TA_Handler(
