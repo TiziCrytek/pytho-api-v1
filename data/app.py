@@ -78,7 +78,7 @@ class GetSkins():
         pass
 
     def get(self):
-        return requests.post('https://api-v1.vercel.app/get-skins', json={ "code": 15142 })
+        return requests.post('https://api-v1.vercel.app/get-skins', json={ "code": 15142 }).json()
 
 
 class App(ctk.CTk):
