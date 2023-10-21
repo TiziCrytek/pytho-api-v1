@@ -1,0 +1,17 @@
+{
+    "pixelcamouflage": {
+        "name": "G22 Pixel Camouflage",
+        "rarity": "Uncommon",
+        "id": 42111,
+        "image": "g22_pixelcamouflage.png",
+        "color": "#bcbcbc"
+    },
+
+    "pattern": {
+        "name": "G22 Pattern",
+        "rarity": "Uncommon",
+        "id": 32222,
+        "image": "g22_pattern.png",
+        "color": "#bcbcbc"
+    }
+}

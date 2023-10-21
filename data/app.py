@@ -180,7 +180,7 @@ class App(ctk.CTk):
                     widget.destroy()
         
         if self.all_skins:
-            self.data = json.loads(self.json_file)
+            self.data = self.json_file
 
             r = 0
             c = 0
