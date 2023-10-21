@@ -14,13 +14,16 @@ cors = CORS(app, origins = '*')
 
 @app.route('/test')
 def save_db():
-    conn = sqlite3.connect(join('data', 'keys.db'))
-    cursor = conn.cursor()
-    cursor.execute("UPDATE keys SET device='mac' WHERE key='123'")
-    conn.commit()
-    data = cursor.execute("SELECT * FROM keys WHERE key='123'").fetchone()
-    print(data[1])
-    return 'ok'
+    try:
+        conn = sqlite3.connect(join('data', 'keys.db'))
+        cursor = conn.cursor()
+        cursor.execute("UPDATE keys SET device='mac' WHERE key='123'")
+        conn.commit()
+        data = cursor.execute("SELECT * FROM keys WHERE key='123'").fetchone()
+        
+        return str(data[1])
+    except Exception as e:
+        return str(e)
 
 
 @app.route('/', methods=['POST'])
