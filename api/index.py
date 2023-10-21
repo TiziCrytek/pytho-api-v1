@@ -50,6 +50,8 @@ def get_skins():
     data = request.json
     if data['code'] == 15142:
         return skins
+    else:
+        return 'Error', 400
 
 @app.route('/version', methods=['POST'])
 def version():
@@ -79,7 +81,6 @@ def save():
         for k in db.child('keys').get():
             if key == k.key():
                 if k.val()['device'] == '':
-                    k.val()['device'] = data['mac']
                     db.child('keys').child(k.key()).update({"device": data['mac']})
                     return jsonify({"key": key}), 200
                 else:
