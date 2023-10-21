@@ -11,7 +11,7 @@ cors = CORS(app, origins = '*')
 
 @app.route('/', methods=['POST'])
 def root():
-    pass
+    return '', 200
 
 @app.route('/get-skins', methods=['POST'])
 def get_skins():
