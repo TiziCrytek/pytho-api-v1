@@ -53,10 +53,7 @@ class SetSkin(ctk.CTkToplevel):
         self.scroll = ctk.CTkScrollableFrame(self, fg_color='transparent')
         self.scroll.grid(row=0, column=0, sticky='nsew', padx=(35, 0))
 
-        skins_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "common.json")
-        with open(skins_file_path, 'r') as json_file: 
-            self.data = json.load(json_file)
-        
+        self.data = GetSkins().get_skins()
         r = 0
         c = 0
 
@@ -77,8 +74,11 @@ class GetSkins():
     def __init__(self):
         pass
 
-    def get(self):
+    def get_skins(self):
         return requests.post('https://api-v1.vercel.app/get-skins', json={ "code": 15142 }).json()
+
+    def get_common(self):
+        return requests.post('https://api-v1.vercel.app/get-common', json={ "code": 15142 }).json()
 
 
 class App(ctk.CTk):
@@ -131,7 +131,7 @@ class App(ctk.CTk):
         telegram = ctk.CTkButton(self.default, text='Telegram', image=self.image_icon_image)
         telegram.place(relx=0.5, rely=0.55, anchor=ctk.CENTER)
         
-        self.json_file = GetSkins().get()
+        self.json_file = GetSkins().get_skins()
         self.scroll = ctk.CTkScrollableFrame(self, fg_color='transparent')
         self.select_button('default')
 
