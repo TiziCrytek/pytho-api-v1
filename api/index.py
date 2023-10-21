@@ -45,29 +45,26 @@ def connect():
 
 @app.route('/save', methods=['POST'])
 def save():
-    try:
-        with open(join('data', 'keys.json'), 'r') as file:
+    with open(join('data', 'keys.json'), 'r') as file:
             keys = json.load(file)
             file.close()
 
-        data = request.json
-        if data['code'] == 15142:
-            key = data['key']
-            if key in keys:
-                if keys[key]['device'] == '':
-                    keys[key]['device'] = data['mac']
-                    with open(join('data', 'keys.json'), 'w') as file:
-                        json.dump(keys, file)
-                        file.close()
-                    return jsonify({"key": key}), 200
-                else:
-                    return jsonify({"error": "Key already used"}), 400
+    data = request.json
+    if data['code'] == 15142:
+        key = data['key']
+        if key in keys:
+            if keys[key]['device'] == '':
+                keys[key]['device'] = data['mac']
+                with open(join('data', 'keys.json'), 'w') as file:
+                    json.dump(keys, file)
+                    file.close()
+                return jsonify({"key": key}), 200
             else:
-                return jsonify({"error": "Invalid key"}), 400
+                return jsonify({"error": "Key already used"}), 400
         else:
-            return jsonify({"error": "Invalid code"}), 400
-    except Exception as e:
-        return e
+            return jsonify({"error": "Invalid key"}), 400
+    else:
+        return jsonify({"error": "Invalid code"}), 400
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -118,8 +115,10 @@ def login():
                     
                     "app": ""
                 } 
-
         return res
+        
+    else:
+        return jsonify({"error": "Invalid code"}), 400
 
 @app.route('/get')
 def get():
