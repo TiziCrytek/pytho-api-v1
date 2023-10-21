@@ -2,12 +2,26 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
-import json
+import json, requests, base64, sqlite3
+
 
 server_access = True
+password_db = 'jd7euw82kd84th7dje'
+
 
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
+
+@app.route('/test')
+def save_db():
+    conn = sqlite3.connect(join('data', 'keys.db'))
+    cursor = conn.cursor()
+    cursor.execute("UPDATE keys SET device='mac' WHERE key='123'")
+    conn.commit()
+    data = cursor.execute("SELECT * FROM keys WHERE key='123'").fetchone()
+    print(data[1])
+    return 'ok'
+
 
 @app.route('/', methods=['POST'])
 def root():
@@ -45,7 +59,7 @@ def connect():
 
 @app.route('/save', methods=['POST'])
 def save():
-    with open(join('data', 'keys.json'), 'r') as file:
+    with open('D:/!_cinema/SkinChanger/data/keys.json', 'r') as file:
             keys = json.load(file)
             file.close()
 
@@ -55,9 +69,7 @@ def save():
         if key in keys:
             if keys[key]['device'] == '':
                 keys[key]['device'] = data['mac']
-                with open(join('data', 'keys.json'), 'w') as file:
-                    json.dump(keys, file)
-                    file.close()
+                
                 return jsonify({"key": key}), 200
             else:
                 return jsonify({"error": "Key already used"}), 400
@@ -116,7 +128,7 @@ def login():
                     "app": ""
                 } 
         return res
-        
+
     else:
         return jsonify({"error": "Invalid code"}), 400
 
