@@ -10,7 +10,6 @@ with open(join('data', 'app.py'), 'r') as file:
     app = json.load(file)
     file.close()
 
-
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
 
@@ -125,4 +124,7 @@ def get():
     return res
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        app.run(debug=True)
+    except Exception as e:
+        print(e)
