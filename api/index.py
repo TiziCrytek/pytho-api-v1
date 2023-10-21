@@ -26,7 +26,7 @@ def version():
         if data['version'] == 'v0.1':
             return '', 200
         else:
-            return '', 400
+            return '', 404
 
 @app.route('/connect', methods=['POST'])
 def connect():
@@ -35,7 +35,9 @@ def connect():
         if server_access:
             return '', 200
         else:
-            return '', 400
+            return '', 404
+    else:
+        return '', 404
 
 @app.route('/save', methods=['POST'])
 def save():
@@ -76,23 +78,24 @@ def login():
                     "app": app
                 }
             elif keys[key]['device'] != data['mac']:
-                res = {
-                    "key": {
-                        "status": "ok",
-                        "device": "error"
-                    },
-                    
-                    "app": ""
-                }
-            elif keys[key]['device'] == '':
-                res = {
-                    "key": {
-                        "status": "ok",
-                        "device": ""
-                    },
-                    
-                    "app": ""
-                }
+                if keys[key]['device'] == '':
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": ""
+                        },
+                        
+                        "app": ""
+                    }
+                else:
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": "error"
+                        },
+                        
+                        "app": ""
+                    }
         else:
             res = {
                     "key": {
