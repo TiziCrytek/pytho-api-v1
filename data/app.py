@@ -53,11 +53,12 @@ class SetSkin(ctk.CTkToplevel):
         self.scroll = ctk.CTkScrollableFrame(self, fg_color='transparent')
         self.scroll.grid(row=0, column=0, sticky='nsew', padx=(35, 0))
 
-        self.data = GetSkins().get_skins()
+        self.data = GetSkins().get_common()
         r = 0
         c = 0
 
         for skin in self.data:
+            print(skin)
             image = self.data[skin]['image']
             name = self.data[skin]['name']
             rarity = self.data[skin]['rarity']
