@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
@@ -52,7 +52,6 @@ def save():
 
         data = request.json
         if data['code'] == 15142:
-            
             key = data['key']
             if key in keys:
                 if keys[key]['device'] == '':
@@ -60,7 +59,13 @@ def save():
                     with open(join('data', 'keys.json'), 'w') as file:
                         json.dump(keys, file)
                         file.close()
-                return key, 200
+                    return jsonify({"key": key}), 200
+                else:
+                    return jsonify({"error": "Key already used"}), 400
+            else:
+                return jsonify({"error": "Invalid key"}), 400
+        else:
+            return jsonify({"error": "Invalid code"}), 400
     except Exception as e:
         return e
 
