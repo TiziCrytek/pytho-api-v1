@@ -9,6 +9,10 @@ server_access = True
 app = Flask(__name__)
 cors = CORS(app, origins = '*')
 
+@app.route('/', methods=['POST'])
+def root():
+    pass
+
 @app.route('/get-skins', methods=['POST'])
 def get_skins():
     with open(join('data', 'skins.json'), 'r') as file:
