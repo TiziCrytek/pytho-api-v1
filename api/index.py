@@ -96,7 +96,7 @@ def login():
         key = data['key']
         for k in db.child('keys').get():
             if key == k.key():
-                if k.val()['device'] == data[mac]:
+                if k.val()['device'] == data['mac']:
                     with open(join('data', 'app.py'), 'r') as file:
                         app = file.read()
                         file.close()
