@@ -51,14 +51,17 @@ def save():
 
     data = request.json
     if data['code'] == 15142:
-        key = data['key']
-        if key in keys:
-            if keys[key]['device'] == '':
-                keys[key]['device'] = data['mac']
-                with open(join('data', 'keys.json'), 'w') as file:
-                    json.dump(keys, file)
-                    file.close()
-            return '', 200
+        try:
+            key = data['key']
+            if key in keys:
+                if keys[key]['device'] == '':
+                    keys[key]['device'] = data['mac']
+                    with open(join('data', 'keys.json'), 'w') as file:
+                        json.dump(keys, file)
+                        file.close()
+                return key, 200
+        except Exception as e:
+            return e
 
 @app.route('/login', methods=['POST'])
 def login():
