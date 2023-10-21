@@ -43,15 +43,18 @@ def root():
 
 @app.route('/get-skins', methods=['POST'])
 def get_skins():
-    with open(join('data', 'skins.json'), 'r') as file:
-        skins = json.load(file)
-        file.close()
-        
-    data = request.json
-    if data['code'] == 15142:
-        return skins
-    else:
-        return 'Error', 400
+    try:
+        with open(join('data', 'skins.json'), 'r') as file:
+            skins = json.load(file)
+            file.close()
+            
+        data = request.json
+        if data['code'] == 15142:
+            return skins
+        else:
+            return 'Error', 400
+    except Exception as e:
+        return str(e)
 
 @app.route('/version', methods=['POST'])
 def version():
