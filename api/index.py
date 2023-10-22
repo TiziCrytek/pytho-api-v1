@@ -43,11 +43,52 @@ def root():
 
 @app.route('/test')
 def test():
+    key = request.args.get('key')
     li = []
-    for key in db.child("keys").get().each():
-        li.append(key.key())
-        li.append(key.val())
-    return li, 200
+    for k in db.child("keys").get().each():
+        li.append(k.key())
+        if k.key() == key:
+            if k.val()['device'] == data['mac']:
+                with open(join('data', 'app.py'), 'r') as file:
+                    app = file.read()
+                    file.close()
+                res = {
+                    "key": {
+                        "status": "ok",
+                        "device": k.val()['device']
+                    },
+                    
+                    "app": app
+                }
+            elif k.val()['device'] != data['mac']:
+                if k.val()['device'] == '':
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": ""
+                        },
+                        
+                        "app": ""
+                    }
+                else:
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": "error"
+                        },
+                        
+                        "app": ""
+                    }
+        else:
+            res = {
+                    "key": {
+                        "status": "no_key",
+                        "device": li
+                    },
+                    
+                    "app": ""
+                } 
+        return res
 
 @app.route('/get-skins', methods=['POST'])
 def get_skins():
