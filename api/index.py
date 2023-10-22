@@ -13,16 +13,17 @@ app = Flask(__name__)
 cors = CORS(app, origins = '*')
 
 config = {
-    "apiKey": "AIzaSyDuqSii-UZqJ5VcbyegVwKUzphvtlId-Yg",
-    "authDomain": "userdb-fb9e9.firebaseapp.com",
-    "projectId": "userdb-fb9e9",
-    "storageBucket": "userdb-fb9e9.appspot.com",
-    "messagingSenderId": "865993321814",
-    "appId": "1:865993321814:web:9385e30878bae0b5ecfaf7",
-    "databaseURL": "https://userdb-fb9e9-default-rtdb.firebaseio.com",
-}
+        "apiKey": "AIzaSyDuqSii-UZqJ5VcbyegVwKUzphvtlId-Yg",
+        "authDomain": "userdb-fb9e9.firebaseapp.com",
+        "projectId": "userdb-fb9e9",
+        "storageBucket": "userdb-fb9e9.appspot.com",
+        "messagingSenderId": "865993321814",
+        "appId": "1:865993321814:web:9385e30878bae0b5ecfaf7",
+        "databaseURL": "https://userdb-fb9e9-default-rtdb.firebaseio.com",
+    }
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
+
 
 @app.route('/vb')
 def save_db():
@@ -43,52 +44,20 @@ def root():
 
 @app.route('/test')
 def test():
-    key = request.args.get('key')
-    li = []
-    for k in db.child("keys").get().each():
-        li.append(k.key())
-        if k.key() == key:
-            if k.val()['device'] == data['mac']:
-                with open(join('data', 'app.py'), 'r') as file:
-                    app = file.read()
-                    file.close()
-                res = {
-                    "key": {
-                        "status": "ok",
-                        "device": k.val()['device']
-                    },
-                    
-                    "app": app
-                }
-            elif k.val()['device'] != data['mac']:
-                if k.val()['device'] == '':
-                    res = {
-                        "key": {
-                            "status": "ok",
-                            "device": ""
-                        },
-                        
-                        "app": ""
-                    }
-                else:
-                    res = {
-                        "key": {
-                            "status": "ok",
-                            "device": "error"
-                        },
-                        
-                        "app": ""
-                    }
-        else:
-            res = {
-                    "key": {
-                        "status": "no_key",
-                        "device": li
-                    },
-                    
-                    "app": ""
-                } 
-        return res
+    
+    k = request.args.get('key')
+    found = False
+    for key in db.child("keys").get().each():
+        if k == key.key():
+            found = True
+            break
+    
+    # Проверьте значение found после завершения цикла
+    if found:
+        return 'OK'
+    else:
+        return 'Error'
+
 
 @app.route('/get-skins', methods=['POST'])
 def get_skins():
@@ -159,54 +128,58 @@ def save():
 
 @app.route('/login', methods=['POST'])
 def login():
+    found = False
     data = request.json
     if data['code'] == 15142:
         key = data['key']
-        li = []
         for k in db.child("keys").get().each():
-            li.append(k.key())
-            if k.key() == key:
-                if k.val()['device'] == data['mac']:
-                    with open(join('data', 'app.py'), 'r') as file:
-                        app = file.read()
-                        file.close()
+            if key == k.key():
+                found = True
+                key = k.key()
+                break
+
+        if found:
+            if key.val()['device'] == data['mac']:
+                with open(join('data', 'app.py'), 'r') as file:
+                    app = file.read()
+                    file.close()
+                res = {
+                    "key": {
+                        "status": "ok",
+                        "device": key.val()['device']
+                    },
+                    
+                    "app": app
+                }
+            elif key.val()['device'] != data['mac']:
+                if key.val()['device'] == '':
                     res = {
                         "key": {
                             "status": "ok",
-                            "device": k.val()['device']
-                        },
-                        
-                        "app": app
-                    }
-                elif k.val()['device'] != data['mac']:
-                    if k.val()['device'] == '':
-                        res = {
-                            "key": {
-                                "status": "ok",
-                                "device": ""
-                            },
-                            
-                            "app": ""
-                        }
-                    else:
-                        res = {
-                            "key": {
-                                "status": "ok",
-                                "device": "error"
-                            },
-                            
-                            "app": ""
-                        }
-            else:
-                res = {
-                        "key": {
-                            "status": "no_key",
-                            "device": li
+                            "device": ""
                         },
                         
                         "app": ""
-                    } 
-            return res
+                    }
+                else:
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": "error"
+                        },
+                        
+                        "app": ""
+                    }
+        else:
+            res = {
+                    "key": {
+                        "status": "no_key",
+                        "device": ""
+                    },
+                    
+                    "app": ""
+                } 
+        return res
     else:
         return jsonify({"error": "Invalid code"}), 400
 
