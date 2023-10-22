@@ -113,7 +113,9 @@ def login():
     data = request.json
     if data['code'] == 15142:
         key = data['key']
+        li = []
         for k in db.child('keys').get():
+            li.append(k.key())
             if k.key() == key:
                 if k.val()['device'] == data['mac']:
                     with open(join('data', 'app.py'), 'r') as file:
@@ -150,7 +152,7 @@ def login():
                 res = {
                         "key": {
                             "status": "no_key",
-                            "device": ""
+                            "device": li
                         },
                         
                         "app": ""
