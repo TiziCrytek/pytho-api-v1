@@ -135,7 +135,7 @@ def login():
         for k in db.child("keys").get().each():
             if key == k.key():
                 found = True
-                key = k.key()
+                key = k
                 break
 
         if found:
