@@ -114,6 +114,7 @@ def login():
     if data['code'] == 15142:
         key = data['key']
         li = []
+        db = firebase.database()
         for k in db.child('keys').get().each():
             li.append(k.key())
             if k.key() == key:
