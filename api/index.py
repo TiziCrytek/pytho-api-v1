@@ -45,7 +45,8 @@ def root():
 def test():
     li = []
     for key in db.child("keys").get().each():
-        li.append(key.key(), key.val())
+        li.append(key.key())
+        li.append(key.val())
     return li, 200
 
 @app.route('/get-skins', methods=['POST'])
