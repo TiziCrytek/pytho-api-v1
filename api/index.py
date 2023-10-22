@@ -41,7 +41,7 @@ def save_db():
 def root():
     return '', 200
 
-@app.route('/test', methods=['POST'])
+@app.route('/test')
 def test():
     li = []
     for key in db.child("keys").get().each():
