@@ -21,8 +21,7 @@ config = {
     "appId": "1:865993321814:web:9385e30878bae0b5ecfaf7",
     "databaseURL": "https://userdb-fb9e9-default-rtdb.firebaseio.com",
 }
-firebase = pyrebase.initialize_app(config)
-db = firebase.database()
+
 
 @app.route('/test')
 def save_db():
@@ -114,8 +113,9 @@ def login():
     if data['code'] == 15142:
         key = data['key']
         li = []
+        firebase = pyrebase.initialize_app(config)
         db = firebase.database()
-        for k in db.child('keys').get().each():
+        for k in db.child("keys").get().each():
             li.append(k.key())
             if k.key() == key:
                 if k.val()['device'] == data['mac']:
