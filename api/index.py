@@ -24,7 +24,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
-@app.route('/test')
+@app.route('/vb')
 def save_db():
     
 
