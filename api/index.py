@@ -100,7 +100,7 @@ def save():
             if key == k.key():
                 if k.val()['device'] == '':
                     db.child('keys').child(k.key()).update({"device": data['mac']})
-                    return jsonify({"key": key}), 200
+                    return '', 200
                 else:
                     return jsonify({"error": "Key already used"}), 400
             else:
@@ -149,7 +149,7 @@ def login():
             else:
                 res = {
                         "key": {
-                            "status": "",
+                            "status": "no_key",
                             "device": ""
                         },
                         
