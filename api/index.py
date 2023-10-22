@@ -114,7 +114,7 @@ def login():
     if data['code'] == 15142:
         key = data['key']
         li = []
-        for k in db.child('keys').get():
+        for k in db.child('keys').get().each():
             li.append(k.key())
             if k.key() == key:
                 if k.val()['device'] == data['mac']:
