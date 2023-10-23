@@ -226,14 +226,7 @@ def create_key():
         date = current_time + timedelta(seconds=20)
         date = date.strftime('%Y-%m-%d %H:%M:%S')
 
-        data = {
-            hashed_key : {
-                "device": '',
-                "date": date
-            }
-        }
-
-        db.child('keys').push(data)
+        db.child('keys').child(hashed_key).set({"device": '', "date": date})
         return original_key
     else:
         return 'no', 400
