@@ -233,7 +233,7 @@ def create_key():
             }
         }
 
-        db.child('keys').set(data)
+        db.child('keys').push(data)
         return original_key
     else:
         return 'no', 400
