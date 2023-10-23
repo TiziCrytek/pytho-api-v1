@@ -244,11 +244,11 @@ def api():
 
     res = jsonify({"message": "No command"})
 
-    if data['command'] == 'lock' and server_access != False:
+    if data['command'] == 'lock':
         server_access = False
         res = jsonify({"message": "Server Closed"})
 
-    elif data['command'] == 'open' and server_access != True:
+    elif data['command'] == 'open':
         server_access = True
         res = jsonify({"message": "Server Open"})
 
