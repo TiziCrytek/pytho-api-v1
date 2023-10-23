@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
-import json, pyrebase
+from datetime import datetime, timedelta    
+import json, pyrebase, random, string, hashlib
 
 
 server_access = True
@@ -130,6 +131,8 @@ def save():
 def login():
     found = False
     data = request.json
+    current_time = datetime.now()
+
     if data['code'] == 15142:
         key = data['key']
         for k in db.child("keys").get().each():
@@ -139,37 +142,48 @@ def login():
                 break
 
         if found:
-            if key.val()['device'] == data['mac']:
-                with open(join('data', 'app.py'), 'r') as file:
-                    app = file.read()
-                    file.close()
+            if key.val()['date'] > current_time:
+                if key.val()['device'] == data['mac']:
+                    with open(join('data', 'app.py'), 'r') as file:
+                        app = file.read()
+                        file.close()
+                    res = {
+                        "key": {
+                            "status": "ok",
+                            "device": key.val()['device']
+                        },
+                        
+                        "app": app
+                    }
+                elif key.val()['device'] != data['mac']:
+                    if key.val()['device'] == '':
+                        res = {
+                            "key": {
+                                "status": "ok",
+                                "device": ""
+                            },
+                            
+                            "app": ""
+                        }
+                    else:
+                        res = {
+                            "key": {
+                                "status": "ok",
+                                "device": "error"
+                            },
+                            
+                            "app": ""
+                        }
+            else:
                 res = {
                     "key": {
-                        "status": "ok",
-                        "device": key.val()['device']
+                        "status": "date",
+                        "device": ""
                     },
                     
-                    "app": app
+                    "app": ""
                 }
-            elif key.val()['device'] != data['mac']:
-                if key.val()['device'] == '':
-                    res = {
-                        "key": {
-                            "status": "ok",
-                            "device": ""
-                        },
-                        
-                        "app": ""
-                    }
-                else:
-                    res = {
-                        "key": {
-                            "status": "ok",
-                            "device": "error"
-                        },
-                        
-                        "app": ""
-                    }
+
         else:
             res = {
                     "key": {
@@ -182,6 +196,44 @@ def login():
         return res
     else:
         return jsonify({"error": "Invalid code"}), 400
+
+@app.route('/create_key', methods=['POST'])
+def create_key():
+    data = request.json
+
+    if data['code'] == 'a2edr45tf5':
+        original_key, hashed_key = generate_key()
+        current_time = datetime.now()
+        date = current_time + timedelta(minutes=2)
+
+        data = {
+            hashed_key : {
+                "device": '',
+                "date": date
+            }
+        }
+
+        db.child('keys').set(data)
+        return original_key
+    else:
+        return '', 400
+
+def generate_random_string(length):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
+
+def generate_key():
+    part1_length = random.randint(1, 9)
+    part2_length = random.randint(1, 9)
+    part3_length = 27 - part1_length - part2_length
+
+    part1 = generate_random_string(part1_length)
+    part2 = generate_random_string(part2_length)
+    part3 = generate_random_string(part3_length)
+
+    generated_key = part1 + '.' + part2 + '.' + part3
+    hashed_key = hashlib.sha256(generated_key.encode()).hexdigest()
+    return generated_key, hashed_key
 
 @app.route('/get')
 def get():
@@ -199,6 +251,7 @@ def get():
     }
 
     return res
+
 
 
 if __name__ == '__main__':
