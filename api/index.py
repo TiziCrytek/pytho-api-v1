@@ -238,6 +238,28 @@ def admins():
     else:
         return 'Error'
 
+@app.route('/api', methods=['POST'])
+def api():
+    data = request.json
+
+    if data['command'] == 'lock server':
+        if server_access != False:
+            server_access = False
+            res = jsonify({"message": "Server Closed"})
+        else:
+            res = jsonify({"message": "Error"})
+            
+        return res
+
+    elif data['command'] == 'open server':
+        if server_access != True:
+            server_access = True
+            res = jsonify({"message": "Server Open"})
+        else:
+            res = jsonify({"message": "Error"})
+
+        return res
+
 @app.route('/get')
 def get():
     bank = TA_Handler(

@@ -22,6 +22,9 @@
             margin-top: 10px;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -39,23 +42,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Обработчик нажатия Enter в поле ввода команды
-        document.getElementById('console-input').addEventListener('keyup', function (event) {
+        $('#console-input').keyup(function(event) {
             if (event.key === 'Enter') {
                 // Получаем введенную команду
-                var command = this.value;
+                var command = $(this).val();
                 // Очищаем поле ввода
-                this.value = '';
-                // Создаем новый элемент для вывода команды в консоли
-                var commandElement = document.createElement('div');
-                commandElement.textContent = '> ' + command;
-                // Добавляем элемент в консоль
-                document.querySelector('.console-container').appendChild(commandElement);
-                // Прокручиваем консоль вниз, чтобы последние сообщения были видны
-                document.querySelector('.console-container').scrollTop = document.querySelector('.console-container').scrollHeight;
-                // Здесь вы можете выполнить обработку введенной команды
-                // Например, отправить команду на сервер и получить ответ
-                // Или выполнить локальные действия на основе введенной команды
+                $(this).val('');
+                // Делаем асинхронный запрос к серверу Flask
+                $.ajax({
+                    url: '/api', // URL-адрес Flask маршрута
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ command: command }), // JSON-данные для отправки
+                    success: function(response) {
+                        // Обработка успешного ответа от сервера
+                        var commandElement = $('<div>').text('> ' + response.message);
+                        // Добавляем элемент в консоль
+                        $('.console-container').append(commandElement);
+                        // Прокручиваем консоль вниз, чтобы последние сообщения были видны
+                        $('.console-container').scrollTop($('.console-container')[0].scrollHeight);
+                    },
+                    error: function(error) {
+                        // Обработка ошибки
+                        console.error('Произошла ошибка:', error);
+                    }
+                });
             }
         });
     </script>
