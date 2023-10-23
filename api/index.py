@@ -216,7 +216,7 @@ def create_key():
         db.child('keys').set(data)
         return original_key
     else:
-        return '', 400
+        return 'no', 400
 
 def generate_random_string(length):
     characters = string.ascii_letters + string.digits
