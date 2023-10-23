@@ -135,6 +135,7 @@ def login():
 
     if data['code'] == 15142:
         key = data['key']
+        key = hashlib.sha256(key.encode()).hexdigest()
         for k in db.child("keys").get().each():
             if key == k.key():
                 found = True
@@ -142,7 +143,7 @@ def login():
                 break
 
         if found:
-            if key.val()['date'] > current_time:
+            if datetime.strptime(key.val()['date'], '%Y-%m-%d %H:%M:%S') > current_time:
                 if key.val()['device'] == data['mac']:
                     with open(join('data', 'app.py'), 'r') as file:
                         app = file.read()
@@ -197,27 +198,6 @@ def login():
     else:
         return jsonify({"error": "Invalid code"}), 400
 
-@app.route('/create_key', methods=['POST'])
-def create_key():
-    data = request.json
-
-    if data['code'] == 'a2edr45tf5':
-        original_key, hashed_key = generate_key()
-        current_time = datetime.now()
-        date = current_time + timedelta(minutes=2)
-
-        data = {
-            hashed_key : {
-                "device": '',
-                "date": date
-            }
-        }
-
-        db.child('keys').set(data)
-        return original_key
-    else:
-        return 'no', 400
-
 def generate_random_string(length):
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
@@ -234,6 +214,28 @@ def generate_key():
     generated_key = part1 + '.' + part2 + '.' + part3
     hashed_key = hashlib.sha256(generated_key.encode()).hexdigest()
     return generated_key, hashed_key
+
+@app.route('/create_key', methods=['POST'])
+def create_key():
+    data = request.json
+
+    if data['code'] == 'a2edr45tf5':
+        original_key, hashed_key = generate_key()
+        current_time = datetime.now()
+        date = current_time + timedelta(minutes=2)
+        date = date.strftime('%Y-%m-%d %H:%M:%S')
+
+        data = {
+            hashed_key : {
+                "device": '',
+                "date": date
+            }
+        }
+
+        db.child('keys').set(data)
+        return original_key
+    else:
+        return 'no', 400
 
 @app.route('/get')
 def get():
