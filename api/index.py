@@ -233,7 +233,10 @@ def create_key():
 
 @app.route('/admins', methods=['GET'])
 def admins():
-    return request.remote_addr
+    if request.remote_addr == '176.105.166.7' and request.args.get('key') == '123':
+        render_template('index.html')  
+    else:
+        return 'Error'
 
 @app.route('/get')
 def get():
