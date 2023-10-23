@@ -258,7 +258,7 @@ def api():
         else:
             res = jsonify({"message": "Error"})
 
-   return res
+    return res
 
 @app.route('/get')
 def get():
