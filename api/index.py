@@ -231,6 +231,10 @@ def create_key():
     else:
         return 'no', 400
 
+@app.route('/admins', methods=['GET'])
+def admins():
+    return request.remote_addr
+
 @app.route('/get')
 def get():
     bank = TA_Handler(
@@ -247,8 +251,6 @@ def get():
     }
 
     return res
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
