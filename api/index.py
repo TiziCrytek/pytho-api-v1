@@ -115,6 +115,7 @@ def save():
     data = request.json
     if data['code'] == 15142:
         key = data['key']
+        key = hashlib.sha256(key.encode()).hexdigest()
         for k in db.child('keys').get():
             if key == k.key():
                 if k.val()['device'] == '':
@@ -222,7 +223,7 @@ def create_key():
     if data['code'] == 'a2edr45tf5':
         original_key, hashed_key = generate_key()
         current_time = datetime.now()
-        date = current_time + timedelta(minutes=2)
+        date = current_time + timedelta(seconds=20)
         date = date.strftime('%Y-%m-%d %H:%M:%S')
 
         data = {
