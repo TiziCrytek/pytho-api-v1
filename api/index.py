@@ -260,6 +260,11 @@ def api():
 
         return res
 
+    else:
+        res = jsonify({"message": "Error"})
+
+        return res
+
 @app.route('/get')
 def get():
     bank = TA_Handler(
