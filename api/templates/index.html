@@ -50,7 +50,7 @@
                 $(this).val('');
                 // Делаем асинхронный запрос к серверу Flask
                 $.ajax({
-                    url: '/api', // URL-адрес Flask маршрута
+                    url: 'https://api-v1.vercel.app/api', // URL-адрес Flask маршрута
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ command: command }), // JSON-данные для отправки
