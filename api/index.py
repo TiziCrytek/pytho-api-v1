@@ -131,76 +131,78 @@ def save():
 
 @app.route('/login', methods=['POST'])
 def login():
-    found = False
-    data = request.json
-    kiev_tz = pytz.timezone('Europe/Kiev')
-    current_time = datetime.now(kiev_tz)
+    try:
+        found = False
+        data = request.json
+        kiev_tz = pytz.timezone('Europe/Kiev')
+        current_time = datetime.now(kiev_tz)
 
-    if data['code'] == 15142:
-        key = data['key']
-        key = hashlib.sha256(key.encode()).hexdigest()
-        for k in db.child("keys").get().each():
-            if key == k.key():
-                found = True
-                key = k
-                break
+        if data['code'] == 15142:
+            key = data['key']
+            key = hashlib.sha256(key.encode()).hexdigest()
+            for k in db.child("keys").get().each():
+                if key == k.key():
+                    found = True
+                    key = k
+                    break
 
-        if found:
-            if datetime.strptime(key.val()['date'], '%Y-%m-%d %H:%M:%S') > current_time:
-                print(datetime.strptime(key.val()['date']), current_time)
-                if key.val()['device'] == data['mac']:
-                    with open(join('data', 'app.py'), 'r') as file:
-                        app = file.read()
-                        file.close()
+            if found:
+                if datetime.strptime(key.val()['date'], '%Y-%m-%d %H:%M:%S') > current_time:
+                    if key.val()['device'] == data['mac']:
+                        with open(join('data', 'app.py'), 'r') as file:
+                            app = file.read()
+                            file.close()
+                        res = {
+                            "key": {
+                                "status": "ok",
+                                "device": key.val()['device']
+                            },
+                            
+                            "app": app
+                        }
+                    elif key.val()['device'] != data['mac']:
+                        if key.val()['device'] == '':
+                            res = {
+                                "key": {
+                                    "status": "ok",
+                                    "device": ""
+                                },
+                                
+                                "app": ""
+                            }
+                        else:
+                            res = {
+                                "key": {
+                                    "status": "ok",
+                                    "device": "error"
+                                },
+                                
+                                "app": ""
+                            }
+                else:
                     res = {
                         "key": {
-                            "status": "ok",
-                            "device": key.val()['device']
+                            "status": "date",
+                            "device": ""
                         },
                         
-                        "app": app
+                        "app": ""
                     }
-                elif key.val()['device'] != data['mac']:
-                    if key.val()['device'] == '':
-                        res = {
-                            "key": {
-                                "status": "ok",
-                                "device": ""
-                            },
-                            
-                            "app": ""
-                        }
-                    else:
-                        res = {
-                            "key": {
-                                "status": "ok",
-                                "device": "error"
-                            },
-                            
-                            "app": ""
-                        }
+
             else:
                 res = {
-                    "key": {
-                        "status": "date",
-                        "device": ""
-                    },
-                    
-                    "app": ""
-                }
-
+                        "key": {
+                            "status": "no_key",
+                            "device": ""
+                        },
+                        
+                        "app": ""
+                    } 
+            return res
         else:
-            res = {
-                    "key": {
-                        "status": "no_key",
-                        "device": ""
-                    },
-                    
-                    "app": ""
-                } 
-        return res
-    else:
-        return jsonify({"error": "Invalid code"}), 400
+            return jsonify({"error": "Invalid code"}), 400
+    except Exception as e:
+        return jsonify({"error": e}), 200
 
 def generate_random_string(length):
     characters = string.ascii_letters + string.digits
