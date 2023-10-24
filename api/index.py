@@ -224,7 +224,7 @@ def create_key():
     if data['code'] == 'a2edr45tf5':
         original_key, hashed_key = generate_key()
         current_time = datetime.now()
-        date = current_time + timedelta(seconds=20)
+        date = current_time + timedelta(seconds=int(data['date']))
         date = date.strftime('%Y-%m-%d %H:%M:%S')
 
         db.child('keys').child(hashed_key).set({"device": '', "date": date})
