@@ -229,7 +229,7 @@ def create_key():
         date = date.strftime('%Y-%m-%d %H:%M:%S')
 
         db.child('keys').child(hashed_key).set({"device": '', "date": date})
-        return original_key
+        return jsonify({"key": original_key})
     else:
         return 'no', 400
 
