@@ -3,7 +3,7 @@ from flask_cors import CORS
 from tradingview_ta import TA_Handler, Interval
 from os.path import join
 from datetime import datetime, timedelta    
-import json, pyrebase, random, string, hashlib
+import json, pyrebase, random, string, hashlib, pytz
 
 
 server_access = True
@@ -220,10 +220,11 @@ def generate_key():
 @app.route('/create_key', methods=['POST'])
 def create_key():
     data = request.json
+    kiev_tz = pytz.timezone('Europe/Kiev')
 
     if data['code'] == 'a2edr45tf5':
         original_key, hashed_key = generate_key()
-        current_time = datetime.now()
+        current_time = datetime.now(kiev_tz)
         date = current_time + timedelta(seconds=int(data['date']))
         date = date.strftime('%Y-%m-%d %H:%M:%S')
 
