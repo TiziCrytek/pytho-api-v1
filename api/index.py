@@ -133,7 +133,8 @@ def save():
 def login():
     found = False
     data = request.json
-    current_time = datetime.now()
+    kiev_tz = pytz.timezone('Europe/Kiev')
+    current_time = datetime.now(kiev_tz)
 
     if data['code'] == 15142:
         key = data['key']
@@ -146,6 +147,7 @@ def login():
 
         if found:
             if datetime.strptime(key.val()['date'], '%Y-%m-%d %H:%M:%S') > current_time:
+                print(datetime.strptime(key.val()['date']), current_time)
                 if key.val()['device'] == data['mac']:
                     with open(join('data', 'app.py'), 'r') as file:
                         app = file.read()
