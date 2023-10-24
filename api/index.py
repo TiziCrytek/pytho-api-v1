@@ -233,7 +233,7 @@ def create_key():
 
 @app.route('/admins', methods=['GET'])
 def admins():
-    if request.remote_addr == '176.105.166.7' and request.args.get('key') == '123':
+    if request.remote_addr == '176.105.166.7':
         return render_template('index.html')  
     else:
         return 'Error'
@@ -243,13 +243,14 @@ def api():
     data = request.json
 
     res = jsonify({"message": "No command"})
+    server = db.child('server').child('access').get().val()
 
-    if data['command'] == 'lock':
-        server_access = False
+    if data['command'] == 'lock' and server != False:
+        db.child('server').update({"access": False})
         res = jsonify({"message": "Server Closed"})
 
-    elif data['command'] == 'open':
-        server_access = True
+    elif data['command'] == 'open' and server != True:
+        db.child('server').update({"access": True})
         res = jsonify({"message": "Server Open"})
 
 
