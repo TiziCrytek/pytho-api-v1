@@ -246,14 +246,19 @@ def api():
     res = jsonify({"message": "No command"})
     server = db.child('server').child('access').get().val()
 
-    if data['command'] == 'lock' and server != False:
-        db.child('server').update({"access": False})
-        res = jsonify({"message": "Server Closed"})
+    if data['command'] == 'lock':
+        if server != False:
+            db.child('server').update({"access": False})
+            res = jsonify({"message": "Server is closed"})
+        else:
+            res = jsonify({"message": "The server is already closed"})
 
-    elif data['command'] == 'open' and server != True:
-        db.child('server').update({"access": True})
-        res = jsonify({"message": "Server Open"})
-
+    elif data['command'] == 'open':
+        if server != True:
+            db.child('server').update({"access": True})
+            res = jsonify({"message": "Server is open"})
+        else:
+            res = jsonify({"message": "The server is already open"})
 
     return res
 
