@@ -97,18 +97,19 @@ def version():
         if data['version'] == 'v0.1':
             return '', 200
         else:
-            return '', 404
+            return '', 400
 
 @app.route('/connect', methods=['POST'])
 def connect():
     data = request.json
     if data['code'] == 15142:
-        if server_access:
+        server = db.child('server').child('access').get().val()
+        if server:
             return '', 200
         else:
-            return '', 404
+            return '', 400
     else:
-        return '', 404
+        return '', 400
 
 @app.route('/save', methods=['POST'])
 def save():
