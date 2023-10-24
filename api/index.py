@@ -134,7 +134,9 @@ def login():
     found = False
     data = request.json
     kiev_tz = pytz.timezone('Europe/Kiev')
-    current_time = datetime.now()
+    current_time = datetime.now(kiev_tz)
+    current_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+    current_time = datetime.strptime(current_time, '%Y-%m-%d %H:%M:%S')
 
     if data['code'] == 15142:
         key = data['key']
