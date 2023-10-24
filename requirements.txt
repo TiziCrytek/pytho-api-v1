@@ -1,5 +1,6 @@
 tradingview-ta==3.3.0
 Pyrebase4==4.7.1
+pytz==2022.7
 Flask-Cors==3.0.10
 blinker==1.6.3
 click==8.1.7
