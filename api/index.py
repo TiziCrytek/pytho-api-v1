@@ -117,17 +117,18 @@ def save():
     if data['code'] == 15142:
         key = data['key']
         key = hashlib.sha256(key.encode()).hexdigest()
-        for k in db.child('keys').get():
-            if str(key) == k.key():
-                if k.val()['device'] == '':
-                    db.child('keys').child(k.key()).update({"device": data['mac']})
-                    return '', 200
-                else:
-                    return jsonify({"error": "Key already used"}), 400
-            else:
-                return jsonify({"error": "Invalid key"}), 400
-        else:
-            return jsonify({"error": "Invalid code"}), 400
+        for k in db.child("keys").get().each():
+            if key == k.key():
+                found = True
+                key = k
+                break
+
+    if found:
+        if k.val()['device'] == '':
+            db.child('keys').child(k.key()).update({"device": data['mac']})
+            return '', 200
+    else:
+        return 'No key', 400
 
 @app.route('/login', methods=['POST'])
 def login():
