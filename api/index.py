@@ -118,7 +118,7 @@ def save():
         key = data['key']
         key = hashlib.sha256(key.encode()).hexdigest()
         for k in db.child('keys').get():
-            if key == k.key():
+            if str(key) == k.key():
                 if k.val()['device'] == '':
                     db.child('keys').child(k.key()).update({"device": data['mac']})
                     return '', 200
