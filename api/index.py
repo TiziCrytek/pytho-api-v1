@@ -109,7 +109,7 @@ def connect():
         else:
             return '', 400
     else:
-        return '', 400
+        return '', 450
 
 @app.route('/save', methods=['POST'])
 def save():
