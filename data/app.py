@@ -82,7 +82,7 @@ class GetSkins():
 
 
 class App(ctk.CTk):
-    def __init__(self, lang):
+    def __init__(self):
         super().__init__()
         global lang
         ctk.set_appearance_mode('dark')
