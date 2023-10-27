@@ -1,5 +1,5 @@
 class Item(ctk.CTkFrame):
-    def __init__(self, master, lang, item_image=None, item_name=None, item_rarity=None, color=None, item_id=None, old_id=None, window=None):
+    def __init__(self, master, item_image=None, item_name=None, item_rarity=None, color=None, item_id=None, old_id=None, window=None, lang=None):
         super().__init__(master)
         self.item_id = item_id
         self.old_id = old_id
@@ -196,7 +196,7 @@ class App(ctk.CTk):
                     if c == 4:
                         c = 0
                         r += 1
-                    self.menu_1 = Item(self.scroll, lang, image, name, rarity, color, item_id)
+                    self.menu_1 = Item(self.scroll, image, name, rarity, color, item_id, lang=lang)
                     self.menu_1.grid(row=r, column=c, padx=(0, 10), pady=(0, 10), sticky='nsew')
                     c += 1
             self.scroll.configure(width=200, height=200)
