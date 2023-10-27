@@ -25,14 +25,14 @@ class Item(ctk.CTkFrame):
             self.window.destroy()
         else:
             if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = SetSkin(self.item_id)
+                self.toplevel_window = SetSkin(self.item_id, lang)
                 self.toplevel_window.focus()
                 self.toplevel_window.grab_set()
             else:
                 self.toplevel_window.focus()
 
 class SetSkin(ctk.CTkToplevel):
-    def __init__(self, old_id):
+    def __init__(self, old_id, lang):
         super().__init__()
         ctk.set_appearance_mode('dark')
 
@@ -66,7 +66,7 @@ class SetSkin(ctk.CTkToplevel):
             if c == 4:
                 c = 0
                 r += 1
-            self.menu = Item(self.scroll, image, name, rarity, color, item_id, old_id, self)
+            self.menu = Item(self.scroll, image, name, rarity, color, item_id, old_id, self, lang)
             self.menu.grid(row=r, column=c, padx=(0, 10), pady=(0, 10), sticky='nsew')
             c += 1
 
