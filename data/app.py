@@ -1,5 +1,5 @@
 class Item(ctk.CTkFrame):
-    def __init__(self, master, item_image=None, item_name=None, item_rarity=None, color=None, item_id=None, old_id=None, window=None):
+    def __init__(self, master, lang, item_image=None, item_name=None, item_rarity=None, color=None, item_id=None, old_id=None, window=None):
         super().__init__(master)
         self.item_id = item_id
         self.old_id = old_id
@@ -13,7 +13,7 @@ class Item(ctk.CTkFrame):
         self.name.grid(row=1, column=0, sticky='nsew')
         self.rarity = ctk.CTkLabel(self, text=item_rarity, text_color=color)
         self.rarity.grid(row=2, column=0, sticky='nsew')
-        self.button = ctk.CTkButton(self, text='Применить', fg_color='grey10', hover_color='#623991', command=self.set_skin)
+        self.button = ctk.CTkButton(self, text=app_translator('Apply', lang), fg_color='grey10', hover_color='#623991', command=self.set_skin)
         self.button.grid(row=3, column=0, pady=(0, 5))
 
         self.toplevel_window = None
@@ -58,7 +58,6 @@ class SetSkin(ctk.CTkToplevel):
         c = 0
 
         for skin in self.data:
-            print(skin)
             image = self.data[skin]['image']
             name = self.data[skin]['name']
             rarity = self.data[skin]['rarity']
@@ -83,8 +82,9 @@ class GetSkins():
 
 
 class App(ctk.CTk):
-    def __init__(self):
+    def __init__(self, lang):
         super().__init__()
+        self.lang = lang
         ctk.set_appearance_mode('dark')
 
         self.title("SkinChanger")
@@ -115,15 +115,15 @@ class App(ctk.CTk):
         self.menu.grid(row=1, column=0, sticky='ns')
         self.menu.grid_columnconfigure(0, weight=1)
 
-        self.button = ctk.CTkButton(self.menu, corner_radius=0, height=0, border_spacing=10, text='Пистолеты', command=self.button_1, fg_color="transparent", anchor="center", hover_color="gray30")
+        self.button = ctk.CTkButton(self.menu, corner_radius=0, height=0, border_spacing=10, text=app_tranlation('Pistols',self.lang), command=self.button_1, fg_color="transparent", anchor="center", hover_color="gray30")
         self.button.grid(row=0, column=0, sticky="ew")
-        self.button2 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text='Пистолеты Пулиметы', command=self.button_2, fg_color="transparent", anchor="center", hover_color="gray30")
+        self.button2 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text=app_tranlation('Pistols Machine guns',self.lang), command=self.button_2, fg_color="transparent", anchor="center", hover_color="gray30")
         self.button2.grid(row=1, column=0, sticky="ew")
-        self.button3 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text='Тяжолое Оружие', command=self.button_3, fg_color="transparent", anchor="center", hover_color="gray30")
+        self.button3 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text=app_tranlation('Heavy Weapons',self.lang), command=self.button_3, fg_color="transparent", anchor="center", hover_color="gray30")
         self.button3.grid(row=2, column=0, sticky="ew")
-        self.button4 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text='Винтовик', command=self.button_4, fg_color="transparent", anchor="center", hover_color="gray30")
+        self.button4 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text=app_tranlation('Rifle',self.lang), command=self.button_4, fg_color="transparent", anchor="center", hover_color="gray30")
         self.button4.grid(row=3, column=0, sticky="ew")
-        self.button5 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text='Снайперские Винтовик', command=self.button_5, fg_color="transparent", anchor="center", hover_color="gray30")
+        self.button5 = ctk.CTkButton(self.menu, corner_radius=0, height=40, border_spacing=10, text=app_tranlation('Sniper Rifle',self.lang), command=self.button_5, fg_color="transparent", anchor="center", hover_color="gray30")
         self.button5.grid(row=4, column=0, sticky="ew")
 
         self.default = ctk.CTkFrame(self, fg_color='transparent')
@@ -196,7 +196,7 @@ class App(ctk.CTk):
                     if c == 4:
                         c = 0
                         r += 1
-                    self.menu_1 = Item(self.scroll, image, name, rarity, color, item_id)
+                    self.menu_1 = Item(self.scroll, self.lang, image, name, rarity, color, item_id)
                     self.menu_1.grid(row=r, column=c, padx=(0, 10), pady=(0, 10), sticky='nsew')
                     c += 1
             self.scroll.configure(width=200, height=200)
