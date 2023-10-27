@@ -84,7 +84,7 @@ class GetSkins():
 class App(ctk.CTk):
     def __init__(self, lang):
         super().__init__()
-        self.lang = lang
+        self.lang = global lang
         ctk.set_appearance_mode('dark')
 
         self.title("SkinChanger")
