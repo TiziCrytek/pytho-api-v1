@@ -34,9 +34,10 @@ def save_db():
     key = '321'
     keys = db.child('keys').get()
     for i in keys.each():
-        if key == i.key():
-            
+        if key == i.key()
             return str(i.val()['device'])
+        else:
+            return 'Error'
 
 
 @app.route('/', methods=['POST'])
